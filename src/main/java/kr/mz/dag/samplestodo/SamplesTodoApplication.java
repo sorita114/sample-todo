@@ -3,8 +3,11 @@ package kr.mz.dag.samplestodo;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
+import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,6 +17,16 @@ public class SamplesTodoApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SamplesTodoApplication.class, args);
+	}
+
+}
+
+@Configuration
+class RepositoryConfig extends RepositoryRestConfigurerAdapter {
+
+	@Override
+	public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
+		config.exposeIdsFor(Todo.class);
 	}
 
 }
@@ -33,7 +46,7 @@ class Todo {
 	private Date createdDatetime = new Date();
 
 	@Column
-	private Date doneDatetime;
+	private String doneDatetime;
 
 	public String getId() {
 		return id;
@@ -59,11 +72,11 @@ class Todo {
 		this.createdDatetime = createdDatetime;
 	}
 
-	public Date getDoneDatetime() {
+	public String getDoneDatetime() {
 		return doneDatetime;
 	}
 
-	public void setDoneDatetime(Date doneDatetime) {
+	public void setDoneDatetime(String doneDatetime) {
 		this.doneDatetime = doneDatetime;
 	}
 }
